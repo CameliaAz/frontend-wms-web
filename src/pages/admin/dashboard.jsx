@@ -3,6 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Nav";
 import Charts from "../../components/Charts";
 import Card from "../../components/Card";
+import axios from 'axios';
 
 export default function AdminDashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -11,7 +12,7 @@ export default function AdminDashboard() {
         <div className="flex min-h-screen">
             {/* Sidebar */}
             <div className="w-64">
-                    <Sidebar />
+            <Sidebar role="admin" />
                 </div>
 
             {/* Main Content */}

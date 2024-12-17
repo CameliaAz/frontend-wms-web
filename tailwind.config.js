@@ -6,7 +6,11 @@ module.exports = {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-blue': '#1e429f',
+      },
+    },
   },
   plugins: [
     flowbite.plugin(),

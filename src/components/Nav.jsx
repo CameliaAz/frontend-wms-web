@@ -1,25 +1,12 @@
-import React from "react";
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts";
-
-const data = [
-    { name: "Mon", uv: 400 },
-    { name: "Tue", uv: 300 },
-    { name: "Wed", uv: 200 },
-    { name: "Thu", uv: 278 },
-    { name: "Fri", uv: 189 },
-    { name: "Sat", uv: 239 },
-    { name: "Sun", uv: 349 },
-];
+import React, { useState } from "react";
 
 export default function Navbar() {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
     return (
         <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -59,16 +46,47 @@ export default function Navbar() {
                         </a>
                     </div>
                     <div className="flex items-center">
-                        <button
-                            type="button"
-                            className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                        >
-                            <img
-                                className="w-8 h-8 rounded-full"
-                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                alt="User"
-                            />
-                        </button>
+                        {/* Profile Section */}
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={toggleDropdown}
+                                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                            >
+                                <img
+                                    className="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    alt="User"
+                                />
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            {isDropdownOpen && (
+                                <div
+                                    className="absolute right-0 top-full mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 z-50"
+                                    id="user-dropdown"
+                                >
+                                    <div className="px-4 py-3">
+                                        <span className="block text-sm text-gray-900 dark:text-white">
+                                            Bonnie Green
+                                        </span>
+                                        <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                                            name@flowbite.com
+                                        </span>
+                                    </div>
+                                    <ul className="py-2">
+                                        <li>
+                                            <a
+                                                href="#"
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                            >
+                                                Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
