@@ -22,9 +22,8 @@ export default function Barang() {
         const fetchBarang = async () => {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/barang');
-                console.log(response.data); // Memeriksa struktur data dari API
-                if (Array.isArray(response.data.data)) {
-                    setBarang(response.data.data);  // Mengakses array 'data'
+                if (Array.isArray(response.data)) {
+                    setBarang(response.data); // Sesuai struktur dari backend
                 } else {
                     setError('Data format is invalid');
                 }
@@ -35,8 +34,6 @@ export default function Barang() {
                 setIsLoading(false);
             }
         };
-        
-
         fetchBarang();
     }, []);
 
@@ -93,63 +90,79 @@ export default function Barang() {
     };
 
     const columns = [
-    {
-        title: "ID",
-        key: "id",
-        dataIndex: "id",
-    },
-    {
-        title: "Nama Barang",
-        key: "nama",  // Ganti 'nama_barang' menjadi 'nama'
-        dataIndex: "nama",  // Ganti 'nama_barang' menjadi 'nama'
-    },
-    {
-        title: "Harga",
-        key: "harga_beli",  // Ganti 'harga' menjadi 'harga_beli'
-        dataIndex: "harga_beli",  // Ganti 'harga' menjadi 'harga_beli'
-    },
-    {
-        title: "Kategori ID",
-        key: "kategori_id",
-        dataIndex: "kategori_id",  // Menambahkan kategori_id
-        render: (text, record) => record.kategori.id, // Menampilkan kategori.id
-    },
-    {
-        title: "Supplier ID",
-        key: "supplier_id",
-        dataIndex: "supplier_id",  // Menambahkan supplier_id
-        render: (text, record) => record.supplier.id, // Menampilkan supplier.id
-    },
-    {
-        title: "Expired",
-        key: "expired",
-        dataIndex: "expired",  // Menambahkan expired
-    },  
         {
-            title: "Actions",
-            key: "actions",
-            render: (text, record) => (
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => handleEdit(record.id)}
-                        className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-green-800 rounded border-2 border-green-400 hover:underline"
-                    >
-                        Edit
-                    </button>
-                    <button
-                        onClick={() => deleteBarang(record.id)}
-                        className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-red-700 rounded border-2 border-red-400 hover:underline"
-                    >
-                        Delete
-                    </button>
-                </div>
-            ),
-        }
+            title: "ID",
+            key: "id",
+            dataIndex: "id",
+        },
+        {
+            title: "Nama Barang",
+            key: "nama_barang",
+            dataIndex: "nama_barang", // Sesuaikan dengan backend
+        },
+        {
+            title: "Varian",
+            key: "varian",
+            dataIndex: "varian",
+        },
+        {
+            title: "Ukuran",
+            key: "ukuran",
+            dataIndex: "ukuran",
+        },
+        {
+            title: "Deskripsi",
+            key: "deskripsi",
+            dataIndex: "deskripsi",
+        },
+        {
+            title: "Harga Jual",
+            key: "harga_jual",
+            dataIndex: "harga_jual",
+        },
+        {
+            title: "Kategori",
+            key: "nama_kat",
+            dataIndex: "nama_kat", // Menampilkan nama kategori dari join
+        },
+        {
+            title: "Gambar",
+            key: "gambar",
+            dataIndex: "gambar",
+            render: (text, record) =>
+                record.gambar ? (
+                    <img
+                        src={record.gambar}
+                        alt="Foto Barang"
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
+                    />
+                ) : (
+                    "Tidak ada gambar"
+                ),
+        },
+        
     ];
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
+
+    const renderActions = (row) => (
+        <div className="flex gap-2">
+            <button
+                onClick={() => handleEdit(row.id)}
+                className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-green-800 rounded border-2 border-green-400 hover:underline"
+            >
+                Edit
+            </button>
+            <button
+                onClick={() => handleDeleteBarang(row.id)}
+                className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-red-700 rounded border-2 border-red-400 hover:underline"
+            >
+                Delete
+            </button>
+        </div>
+    );
 
     return (
         <>
@@ -180,6 +193,7 @@ export default function Barang() {
                         columns={columns} 
                         data={barang}
                         rowKey="id" // Ensure each row has a unique key
+                        renderActions={renderActions}
                     />
 
                     {/* Edit Barang Modal */}

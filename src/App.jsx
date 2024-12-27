@@ -32,7 +32,7 @@ const App = () => {
     <Router>
       <Routes>
         {/* Public Route */}
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login/LoginPage" element={<LoginPage />} />
         <Route path="/Unauthorized" element={<Unauthorized />} />
 
         {/* Protected Routes */}
