@@ -8,6 +8,11 @@ import axios from 'axios';
 export default function AdminDashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+    const handleLogout = () => {
+        localStorage.removeItem("authToken");
+        navigate("/");
+      };
+
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}

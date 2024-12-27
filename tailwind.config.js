@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         'custom-blue': '#1e429f',
       },
+      zIndex: {
+        50: "50",
+    },
     },
   },
   plugins: [

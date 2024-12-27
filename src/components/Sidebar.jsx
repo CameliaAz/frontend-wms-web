@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BiArchiveIn, BiArchiveOut, BiArchive } from "react-icons/bi";
 import { TbReportAnalytics } from "react-icons/tb";
+import { RiFileUserLine } from "react-icons/ri";
 import { IoPieChartOutline } from "react-icons/io5";
+import { CiBoxList } from "react-icons/ci";
 import { FaBoxOpen } from "react-icons/fa";
 
 const Sidebar = ({ role }) => {
@@ -11,9 +13,14 @@ const Sidebar = ({ role }) => {
         ? [
             { name: 'Dashboard', path: '/admin/dashboard', icon: IoPieChartOutline },
             { name: 'Barang Masuk', path: '/admin/transaksi_barang/barang_masuk', icon: BiArchiveIn },
-            { name: 'Lokasi Barang', path: '/admin/lokasi_barang', icon: BiArchive },
+            { name: 'Lokasi Barang', path: '/admin/lokasi_barang/lokasi_barang', icon: BiArchive },
             { name: 'Pemindahan Barang', path: '/admin/pemindahan_barang', icon: BiArchiveOut },
             { name: 'Barang Keluar', path: '/admin/transaksi_barang/barang_keluar', icon: FaBoxOpen },
+            { name: 'Supplier Barang', path: '/admin/user/supplier', icon: CiBoxList },
+            { name: 'Kategori Barang', path: '/admin/user/kategori', icon: CiBoxList },
+            { name: 'Rak', path: '/admin/lokasi_barang/data_rak', icon: CiBoxList },
+            { name: 'Barang', path: '/admin/barang/barang', icon: CiBoxList },
+            { name: 'User', path: '/admin/user/user', icon: RiFileUserLine },
             // { name: 'Laporan', path: '/admin/laporan', icon: TbReportAnalytics },
         ]
         : [

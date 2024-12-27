@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
 import Navbar from "../../../components/Nav";
 import TableComponent from "../../../components/Table";
@@ -8,44 +8,7 @@ import { IoAdd } from "react-icons/io5";
 import axios from 'axios';
 
 export default function PenerimaanBarang() {
-    // Data awal
-    const initialData = [
-        {
-            id: 1,
-            nama_barang: "Azarine Liptint Cupcake 10ml",
-            tanggal_masuk: "2024-12-01",
-            kategori: "Lipstick",
-            suplier: "PT Wahana",
-            stok: "1000",
-            exp: "12-2026",
-            harga_beli: "500.000",
-            gambar: "", // Contoh gambar
-        },
-        {
-            id: 2,
-            nama_barang: "Victoria Parfum",
-            tanggal_masuk: "2024-12-02",
-            kategori: "Parfum",
-            suplier: "PT A",
-            stok: "500",
-            exp: "12-2026",
-            harga_beli: "1.000.000",
-            gambar: "",
-        },
-        {
-            id: 3,
-            nama_barang: "G2GLOW Micellar Water 100ml",
-            tanggal_masuk: "2024-12-03",
-            kategori: "Micellar Water",
-            suplier: "PT B",
-            stok: "100",
-            exp: "12-2026",
-            harga_beli: "500.000",
-            gambar: "",
-        },
-    ];
-
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useState([]); // Start with empty data
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -53,30 +16,60 @@ export default function PenerimaanBarang() {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    // Fetch data from the backend when the component is mounted
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/masuk')  // Replace with your actual backend URL
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the data:", error);
+            });
+    }, []); // Empty dependency array means this effect runs once when the component is mounted
+
     // Konfigurasi kolom
     const columns = [
         { key: "id", title: "ID", dataIndex: "id" },
-        { key: "nama_barang", title: "Nama Barang", dataIndex: "nama_barang" },
-        { key: "tanggal_masuk", title: "Tanggal Masuk", dataIndex: "tanggal_masuk" },
-        { key: "kategori", title: "Kategori", dataIndex: "kategori" },
-        { key: "suplier", title: "Suplier", dataIndex: "suplier" },
-        { key: "stok", title: "Stok", dataIndex: "stok" },
-        { key: "exp", title: "Expired", dataIndex: "exp" },
-        { key: "harga_beli", title: "Harga Beli", dataIndex: "harga_beli" },
-        {
-            key: "gambar",
-            title: "Gambar Produk",
-            dataIndex: "gambar",
-            render: (text) =>
-                text ? (
-                    <img
-                        src={text}
-                        alt="Gambar Produk"
-                        className="w-16 h-16 object-cover rounded"
-                    />
-                ) : (
-                    "-"
-                ),
+        { 
+            key: "nama_barang", 
+            title: "Nama Barang", 
+            dataIndex: "barang.nama",  // Updated to match nested structure
+            render: (text) => text || '-' // Safely display value or fallback to '-'
+        },
+        { 
+            key: "tanggal_masuk", 
+            title: "Tanggal Masuk", 
+            dataIndex: "created_at", // Assuming you want to show created_at as the entry date
+            render: (text) => text ? new Date(text).toLocaleDateString() : '-' // Format date
+        },
+        { 
+            key: "kategori", 
+            title: "Kategori", 
+            dataIndex: "kategori.nama_kategori",  // Updated to match nested structure
+            render: (text) => text || '-'
+        },
+        { 
+            key: "suplier", 
+            title: "Suplier", 
+            dataIndex: "supplier.nama",  // Updated to match nested structure
+            render: (text) => text || '-'
+        },
+        { 
+            key: "stok", 
+            title: "Stok", 
+            dataIndex: "jumlah"  // No change needed
+        },
+        { 
+            key: "exp", 
+            title: "Expired", 
+            dataIndex: "expired", 
+            render: (text) => text || '-'  // Display expired date or fallback
+        },
+        { 
+            key: "harga_beli", 
+            title: "Harga Beli", 
+            dataIndex: "harga_beli",
+            render: (text) => text ? `Rp ${parseFloat(text).toLocaleString()}` : '-'  // Format price
         },
     ];
 
@@ -113,16 +106,21 @@ export default function PenerimaanBarang() {
             "Apakah Anda yakin ingin menghapus barang ini?"
         );
         if (confirmDelete) {
-            const updatedData = data.filter((item) => item.id !== id);
-            setData(updatedData);
+            axios.delete(`http://127.0.0.1:8000/masuk/${id}`)
+                .then(() => {
+                    setData(data.filter(item => item.id !== id));
+                })
+                .catch(error => {
+                    console.error("There was an error deleting the data:", error);
+                });
         }
     };
 
     // Fungsi untuk filter data berdasarkan nama_barang
     const handleFilter = (filterValue) => {
         setData(
-            initialData.filter((item) =>
-                item.nama_barang.toLowerCase().includes(filterValue.toLowerCase())
+            data.filter((item) =>
+                item.barang.nama.toLowerCase().includes(filterValue.toLowerCase())  // Filtering based on nama_barang
             )
         );
     };
@@ -158,18 +156,18 @@ export default function PenerimaanBarang() {
                         <AddItemModal isOpen={isModalOpen} onClose={closeModal} />
                     </div>
                     <EditItemModal
-                                            isOpen={isEditModalOpen}
-                                            onClose={() => setEditModalOpen(false)}
-                                            item={selectedItem}
-                                            onUpdate={(updatedItem) => {
-                                                setData((prevData) =>
-                                                    prevData.map((item) =>
-                                                        item.id === updatedItem.id ? updatedItem : item
-                                                    )
-                                                );
-                                                setEditModalOpen(false);
-                                            }}
-                                        />
+                        isOpen={isEditModalOpen}
+                        onClose={() => setEditModalOpen(false)}
+                        item={selectedItem}
+                        onUpdate={(updatedItem) => {
+                            setData((prevData) =>
+                                prevData.map((item) =>
+                                    item.id === updatedItem.id ? updatedItem : item
+                                )
+                            );
+                            setEditModalOpen(false);
+                        }}
+                    />
                     {/* Tabel dengan actions dan filter */}
                     <TableComponent
                         columns={columns}

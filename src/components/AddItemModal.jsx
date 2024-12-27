@@ -69,21 +69,6 @@ export default function AddItemModal({ isOpen, onClose }) {
                 <div className="p-2">
                     <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-2 gap-4">
-                        <div>
-                                <label htmlFor="fotoProduk" className="block text-sm font-medium text-gray-900 dark:text-white">
-                                    Foto Produk
-                                </label>
-                                <input
-                                    type="file"
-                                    id="fotoProduk"
-                                    name="fotoProduk"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    aria-describedby="user_avatar_help"
-                                    required
-                                />
-                            </div>
                             <div>
                                 <label htmlFor="namaProduk" className="block text-sm font-medium text-gray-900 dark:text-white">
                                     Nama Produk

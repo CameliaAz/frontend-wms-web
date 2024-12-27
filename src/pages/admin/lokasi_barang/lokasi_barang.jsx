@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Nav";
-import TableComponent from "../../components/Table";
-import AddItemLokasi from "../../components/AddItemLokasi";
-import EditLokasiModal from "../../components/EditLokasiModal";
-import MoveItemModal from "../../components/MoveItemModal";
+import Sidebar from "../../../components/Sidebar";
+import Navbar from "../../../components/Nav";
+import TableComponent from "../../../components/Table";
+import AddItemLokasi from "../../../components/AddItemLokasi";
+import EditLokasiModal from "../../../components/EditLokasiModal";
+import MoveItemModal from "../../../components/MoveItemModal";
 import { IoAdd } from "react-icons/io5";
 import axios from 'axios';
 

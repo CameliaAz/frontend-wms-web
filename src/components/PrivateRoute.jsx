@@ -1,19 +1,21 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const PrivateRoute = ({ children, role, allowedRoles }) => {
-  if (!role) {
-    // Jika pengguna tidak login, redirect ke halaman login
-    return <Navigate to="/login" />;
+const PrivateRoute = ({ allowedRoles }) => {
+  const userRole = localStorage.getItem("userRole");
+
+  // Jika tidak ada userRole, redirect ke halaman login
+  if (!userRole) {
+    return <Navigate to="/login/LoginPage" replace />;
   }
 
-  if (!allowedRoles.includes(role)) {
-    // Jika pengguna tidak memiliki role yang diizinkan
-    return <Navigate to="/unauthorized" />;
+  // Jika role pengguna tidak sesuai dengan allowedRoles, redirect ke halaman unauthorized
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/login/Unauthorized" replace />;
   }
 
-  // Jika lolos validasi, tampilkan komponen anak
-  return children;
+  // Jika lolos pemeriksaan, render konten
+  return <Outlet />;
 };
 
 export default PrivateRoute;
