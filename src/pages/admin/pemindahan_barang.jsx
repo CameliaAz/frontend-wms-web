@@ -68,10 +68,10 @@ const PemindahanBarang = () => {
         { key: "id", title: "ID", dataIndex: "id" },
         { key: "nama_barang", title: "Nama Barang", dataIndex: "barang.nama" },
         { key: "date", title: "Tanggal Masuk", dataIndex: "created_at" },
-        { key: "lokasi_asal", title: "Lokasi Asal", dataIndex: "rak_asal.nama_rak" },
+        { key: "lokasi_asal", title: "Lokasi Asal", dataIndex: "rak_sumber.nama_rak" },
         { key: "lokasi_tujuan", title: "Lokasi Tujuan", dataIndex: "rak_tujuan.nama_rak" },
-        { key: "jumlah", title: "Jumlah", dataIndex: "jumlah" },
-        { key: "admin", title: "Admin", dataIndex: "user.name" },
+        { key: "jumlah", title: "Jumlah", dataIndex: "jumlah_pindah" },
+        { key: "admin", title: "Admin", dataIndex: "user_name" },
     ];
 
     // Fungsi untuk merender aksi edit dan hapus

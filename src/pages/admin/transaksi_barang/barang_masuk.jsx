@@ -7,7 +7,7 @@ import EditItemModal from "../../../components/EditItemModal";
 import { IoAdd } from "react-icons/io5";
 import axios from 'axios';
 
-export default function PenerimaanBarang() {
+export default function BarangMasuk() {
     const [data, setData] = useState([]); // Start with empty data
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function PenerimaanBarang() {
 
     // Fetch data from the backend when the component is mounted
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/masuk')  // Replace with your actual backend URL
+        axios.get('http://127.0.0.1:8000/api/barang-masuk')  // Replace with your actual backend URL
             .then(response => {
                 setData(response.data);
             })
@@ -29,46 +29,57 @@ export default function PenerimaanBarang() {
 
     // Konfigurasi kolom
     const columns = [
-        { key: "id", title: "ID", dataIndex: "id" },
+        { 
+            key: "id", 
+            title: "ID", 
+            dataIndex: "id",  // Match nested structure from backend
+        },
         { 
             key: "nama_barang", 
             title: "Nama Barang", 
-            dataIndex: "barang.nama",  // Updated to match nested structure
-            render: (text) => text || '-' // Safely display value or fallback to '-'
+            dataIndex: "nama_barang",  // Match nested structure from backend
         },
         { 
             key: "tanggal_masuk", 
             title: "Tanggal Masuk", 
-            dataIndex: "created_at", // Assuming you want to show created_at as the entry date
+            dataIndex: "tgl_masuk", // Assuming this is the field for the entry date
             render: (text) => text ? new Date(text).toLocaleDateString() : '-' // Format date
+        },
+        { 
+            key: "nama_rak", 
+            title: "Rak", 
+            dataIndex: "nama_rak", // Assuming this is the field for the entry date
+        },
+        { 
+            key: "nama_lokasi", 
+            title: "Bagian Rak", 
+            dataIndex: "nama_lokasi", // Assuming this is the field for the entry date
         },
         { 
             key: "kategori", 
             title: "Kategori", 
-            dataIndex: "kategori.nama_kategori",  // Updated to match nested structure
-            render: (text) => text || '-'
+            dataIndex: "nama_kat"  // Assuming this is a direct field or replace with nested property
         },
         { 
             key: "suplier", 
             title: "Suplier", 
-            dataIndex: "supplier.nama",  // Updated to match nested structure
-            render: (text) => text || '-'
+            dataIndex: "nama_sup"  // Match nested structure from backend
         },
         { 
             key: "stok", 
             title: "Stok", 
-            dataIndex: "jumlah"  // No change needed
+            dataIndex: "jumlah_barang_masuk"  // Match to the field for stock quantity
         },
         { 
             key: "exp", 
             title: "Expired", 
-            dataIndex: "expired", 
+            dataIndex: "exp", // Assuming this is the correct field name for expiry date
             render: (text) => text || '-'  // Display expired date or fallback
         },
         { 
             key: "harga_beli", 
             title: "Harga Beli", 
-            dataIndex: "harga_beli",
+            dataIndex: "harga",  // Match with the backend response for purchase price
             render: (text) => text ? `Rp ${parseFloat(text).toLocaleString()}` : '-'  // Format price
         },
     ];
@@ -106,7 +117,7 @@ export default function PenerimaanBarang() {
             "Apakah Anda yakin ingin menghapus barang ini?"
         );
         if (confirmDelete) {
-            axios.delete(`http://127.0.0.1:8000/masuk/${id}`)
+            axios.delete(`http://127.0.0.1:8000/api/barang-masuk/${id}`)  // Ensure API URL matches
                 .then(() => {
                     setData(data.filter(item => item.id !== id));
                 })
@@ -120,7 +131,7 @@ export default function PenerimaanBarang() {
     const handleFilter = (filterValue) => {
         setData(
             data.filter((item) =>
-                item.barang.nama.toLowerCase().includes(filterValue.toLowerCase())  // Filtering based on nama_barang
+                item.barang.nama_barang.toLowerCase().includes(filterValue.toLowerCase())  // Filtering based on nama_barang
             )
         );
     };

@@ -5,8 +5,9 @@ function AddRak({ isOpen, onClose, onAddRak }) {
     const [formData, setFormData] = useState({
         barang_id: "",
         nama_rak: "",
-        jenis_rak: "",
+        jumlah: 0, // Menambahkan jumlah
         status: "available", // default status rak adalah available
+        exp: "", // Menambahkan exp
     });
 
     const handleInputChange = (e) => {
@@ -24,8 +25,9 @@ function AddRak({ isOpen, onClose, onAddRak }) {
             setFormData({
                 barang_id: "",
                 nama_rak: "",
-                jenis_rak: "",
-                status: "available", // Reset form setelah submit
+                jumlah: 0, // Reset jumlah
+                status: "available", // Reset status
+                exp: "", // Reset exp
             });
             onClose(); // Menutup modal setelah rak ditambahkan
         } catch (error) {
@@ -42,18 +44,6 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white">
                         Tambah Rak
                     </h2>
-                    <div
-                                                    className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"
-                                                    style={{ backgroundColor: "#1e429f" }}
-                                                >
-                                                    <IoAdd className="w-5 h-5 text-white" />
-                                                    <button
-                                                        onClick={() => setIsModalOpen(true)}
-                                                        className="text-white text-sm font-semibold font-['Poppins'] leading-[21px] cursor-pointer hover:underline"
-                                                    >
-                                                        Tambahkan Supplier
-                                                    </button>
-                                                </div>
                     <button
                         onClick={onClose}
                         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -84,7 +74,7 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                         <input
                             type="text"
                             name="barang_id"
-                            value={formData.barang_id} 
+                            value={formData.barang_id}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             placeholder="Masukkan ID barang"
@@ -107,20 +97,30 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Jenis Rak
+                            Jumlah
                         </label>
-                        <select
-                            name="jenis_rak"
-                            value={formData.jenis_rak}
+                        <input
+                            type="number"
+                            name="jumlah"
+                            value={formData.jumlah}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                            placeholder="Masukkan jumlah"
                             required
-                        >
-                            <option value="">Pilih Jenis Rak</option>
-                            <option value="Atas">Atas</option>
-                            <option value="Tengah">Tengah</option>
-                            <option value="Bawah">Bawah</option>
-                        </select>
+                            min="0"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            Exp (Tanggal Kadaluarsa)
+                        </label>
+                        <input
+                            type="date"
+                            name="exp"
+                            value={formData.exp}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                        />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">

@@ -101,7 +101,7 @@ export default function Users() {
     const renderActions = (row) => (
         <div className="flex gap-2">
             <button
-                onClick={() => handleEdit(row.id)}
+                onClick={() => handleEditUser(row.id)}
                 className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-green-800 rounded border-2 border-green-400 hover:underline"
             >
                 Edit

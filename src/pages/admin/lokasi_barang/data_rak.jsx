@@ -21,8 +21,11 @@ export default function Rak() {
         const fetchRak = async () => {
             try {
                 const response = await axios.get('http://127.0.0.1:8000/api/rak');
-                console.log('Data fetched:', response.data.data); // Debugging
-                setRak(response.data.data || []);
+                if (Array.isArray(response.data)) {
+                    setRak(response.data); // Sesuai struktur dari backend
+                } else {
+                    setError('Data format is invalid');
+                }
             } catch (error) {
                 console.error('Error fetching rak:', error);
                 setError('Failed to fetch rak');
@@ -30,7 +33,6 @@ export default function Rak() {
                 setIsLoading(false);
             }
         };
-
         fetchRak();
     }, []);
 
@@ -91,9 +93,9 @@ export default function Rak() {
             dataIndex: "id",
         },
         {
-            title: "Barang ID",
-            key: "barang_id",
-            dataIndex: "barang_id",
+            title: "Nama Barang",
+            key: "nama_barang",
+            dataIndex: "nama_barang",
         },
         {
             title: "Nama Rak",
@@ -101,14 +103,19 @@ export default function Rak() {
             dataIndex: "nama_rak",
         },
         {
-            title: "Jenis Rak",
-            key: "jenis_rak",
-            dataIndex: "jenis_rak",
+            title: "Lokasi Rak",
+            key: "nama_lokasi",
+            dataIndex: "nama_lokasi",
         },
         {
             title: "Stok",
-            key: "stok",
-            dataIndex: "stok",
+            key: "jumlah",
+            dataIndex: "jumlah",
+        },
+        {
+            title: "EXP",
+            key: "exp",
+            dataIndex: "exp",
         },
         {
             title: "Status",

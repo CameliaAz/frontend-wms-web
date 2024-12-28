@@ -77,7 +77,7 @@ export default function Barang() {
         }
     };
 
-    const deleteBarang = async (id) => {
+    const handledeleteBarang = async (id) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/barang/${id}`);
             setBarang((prevBarang) =>
@@ -150,7 +150,7 @@ export default function Barang() {
     const renderActions = (row) => (
         <div className="flex gap-2">
             <button
-                onClick={() => handleEdit(row.id)}
+                onClick={() => handleEditBarang(row.id)}
                 className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-green-800 rounded border-2 border-green-400 hover:underline"
             >
                 Edit

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function EditItemModal({ isOpen, onClose, item, onUpdate }) {
+export default function EditItemModal({ isOpen, onClose, item, onUpdate, kategoriList }) {
     const [formData, setFormData] = useState({
         id: "",
         nama_produk: "",
@@ -9,12 +9,20 @@ export default function EditItemModal({ isOpen, onClose, item, onUpdate }) {
         tanggal_keluar: "",
         lokasi_asal: "",
         tujuan_keluar: "",
-        deskripsi: "",
     });
 
     useEffect(() => {
         if (item) {
-            setFormData(item);
+            // Update formData with item values
+            setFormData({
+                id: item.id,
+                nama_produk: item.barang ? item.barang.nama_barang : "", // Accessing barang.nama
+                kategori: item.kategori ? item.kategori.id : "", // Storing the category ID
+                jumlah_keluar: item.jumlah || "", // Accessing jumlah
+                tanggal_keluar: item.tanggal_keluar || "", // Accessing created_at
+                lokasi_asal: item.rak ? item.rak.nama_rak : "", // Accessing rak.nama_rak
+                tujuan_keluar: item.alasan || "", // Accessing alasan
+            });
         }
     }, [item]);
 
@@ -41,13 +49,23 @@ export default function EditItemModal({ isOpen, onClose, item, onUpdate }) {
                         placeholder="Nama Produk"
                         className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <input
-                        name="kategori"
-                        value={formData.kategori}
-                        onChange={handleChange}
-                        placeholder="Kategori"
-                        className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div>
+                        <label className="block mb-2 font-semibold">Kategori</label>
+                        <select
+                            name="kategori"
+                            value={formData.kategori}
+                            onChange={handleChange}
+                            className="w-full border px-4 py-2 rounded"
+                            required
+                        >
+                            <option value="">Pilih Kategori</option>
+                            {kategoriList.map((kategori) => (
+                                <option key={kategori.id} value={kategori.id}>
+                                    {kategori.nama_kat}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <input
                         name="jumlah_keluar"
                         value={formData.jumlah_keluar}
@@ -60,6 +78,7 @@ export default function EditItemModal({ isOpen, onClose, item, onUpdate }) {
                         value={formData.tanggal_keluar}
                         onChange={handleChange}
                         placeholder="Tanggal Keluar"
+                        type="date"
                         className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <input
@@ -76,13 +95,6 @@ export default function EditItemModal({ isOpen, onClose, item, onUpdate }) {
                         placeholder="Tujuan Keluar"
                         className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <textarea
-                        name="deskripsi"
-                        value={formData.deskripsi}
-                        onChange={handleChange}
-                        placeholder="Deskripsi"
-                        className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    ></textarea>
                 </div>
                 <div className="flex justify-end gap-2 mt-4">
                     <button
