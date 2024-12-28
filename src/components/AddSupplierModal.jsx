@@ -28,7 +28,7 @@ const AddSupplierModal = ({ isModalOpen, onClose, onAddSupplier }) => {
                 setIsSuccessPopupOpen(true); // Tampilkan popup sukses terlebih dahulu
                 setTimeout(() => {
                     setIsSuccessPopupOpen(false);
-                    navigate('/');
+                    navigate('/admin/user/supplier');
                 }, 3000);
                 onClose(); // Tutup modal setelah popup sukses
             }

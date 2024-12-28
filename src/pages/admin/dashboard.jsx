@@ -95,8 +95,8 @@ export default function AdminDashboard() {
                             <Charts data={chartData} />
                         </div>
                         <div className="flex gap-x-4">
-                            <Card title="Barang Masuk" description={barangMasuk} href="#" />
-                            <Card title="Barang Keluar" description={barangKeluar} href="#" />
+                            <Card title="Barang Masuk" description={barangMasuk} />
+                            <Card title="Barang Keluar" description={barangKeluar} />
                         </div>
                         
                     </div>

@@ -28,8 +28,9 @@ const AddKategoriModal = ({ isModalOpen, onClose, onAddKategori }) => {
                 setIsSuccessPopupOpen(true);
                 setTimeout(() => {
                     setIsSuccessPopupOpen(false);
-                    navigate('/'); // Navigate to the home page or any other desired page
+                    navigate('/admin/user/kategori'); // Navigate to the home page or any other desired page
                 }, 3000);
+                onClose(); // Tutup modal setelah popup sukses
             }
         } catch (error) {
             console.error('Error:', error);
@@ -71,14 +72,6 @@ const AddKategoriModal = ({ isModalOpen, onClose, onAddKategori }) => {
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            )}
-
-            {isSuccessPopupOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-green-500 p-6 rounded shadow-lg">
-                        <h2 className="text-xl font-bold text-white">Kategori Berhasil Ditambahkan!</h2>
                     </div>
                 </div>
             )}

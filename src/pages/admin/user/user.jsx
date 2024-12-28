@@ -126,7 +126,7 @@ export default function Users() {
                     <Sidebar role="admin" />
                 </div>
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold">Data User</h1>
                     </div>

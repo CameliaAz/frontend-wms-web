@@ -12,6 +12,7 @@ export default function Rak() {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
     const [error, setError] = useState(null);
     const [selectedRak, setSelectedRak] = useState(null);
     const navigate = useNavigate();
@@ -161,7 +162,7 @@ export default function Rak() {
                     <Sidebar role="admin" />
                 </div>
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Data Rak</h1>
                     <div
                         className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"
@@ -192,6 +193,15 @@ export default function Rak() {
                         data={rak} 
                         renderActions={renderActions} 
                     />
+
+                    {/* Success Popup */}
+                    {isSuccessPopupOpen && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <div className="bg-green-500 p-6 rounded shadow-lg">
+                                <h2 className="text-xl font-bold text-white">Data berhasil dihapus!</h2>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

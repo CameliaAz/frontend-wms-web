@@ -128,7 +128,7 @@ export default function BarangKeluar() {
                 <div className="w-64 bg-gray-800 text-white">
                     <Sidebar role="admin" />
                 </div>
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Barang Keluar</h1>
                     <div
                         className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"

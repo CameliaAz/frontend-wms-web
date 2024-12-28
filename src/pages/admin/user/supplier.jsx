@@ -150,7 +150,7 @@ export default function Supplier() {
                     <Sidebar role="admin" />
                 </div>
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Data Supplier</h1>
                     <div
                         className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"

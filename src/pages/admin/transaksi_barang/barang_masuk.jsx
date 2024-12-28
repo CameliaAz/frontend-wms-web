@@ -151,7 +151,7 @@ export default function BarangMasuk() {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Barang Masuk</h1>
                     <div
                         className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"

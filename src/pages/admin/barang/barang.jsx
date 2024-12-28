@@ -175,7 +175,7 @@ export default function Barang() {
                     <Sidebar role="admin" />
                 </div>
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Data Barang</h1>
 
                     {/* Add Barang Modal */}

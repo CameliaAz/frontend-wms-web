@@ -126,7 +126,7 @@ export default function Kategori() {
                 Edit
             </button>
             <button
-                onClick={() => deleteKategori(row.id)}
+                onClick={() => confirmDeleteKategori(row.id)}
                 className="h-[22px] px-2.5 py-[5px] font-medium text-white bg-red-700 rounded border-2 border-red-400 hover:underline"
             >
                 Delete
@@ -145,7 +145,7 @@ export default function Kategori() {
                     <Sidebar role="admin" />
                 </div>
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Data Kategori</h1>
 
                     <div
@@ -154,7 +154,7 @@ export default function Kategori() {
                     >
                         <IoAdd className="w-5 h-5 text-white" />
                         <button
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={openModal}
                             className="text-white text-sm font-semibold font-['Poppins'] leading-[21px] cursor-pointer hover:underline"
                         >
                             Tambahkan Kategori

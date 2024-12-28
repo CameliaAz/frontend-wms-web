@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function AddRak({ isOpen, onClose, onAddRak }) {
     const [formData, setFormData] = useState({
-        barang_id: "",
         nama_rak: "",
-        jumlah: 0, // Menambahkan jumlah
+        nama_lokasi: "",
         status: "available", // default status rak adalah available
-        exp: "", // Menambahkan exp
     });
+    const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
+    const navigate = useNavigate();
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -20,16 +22,15 @@ function AddRak({ isOpen, onClose, onAddRak }) {
         try {
             // Mengirim data rak ke API
             const response = await axios.post("http://127.0.0.1:8000/api/rak", formData);
-            alert("Rak berhasil ditambahkan!");
-            if (onAddRak) onAddRak(); // Callback untuk menyegarkan data rak setelah ditambahkan
-            setFormData({
-                barang_id: "",
-                nama_rak: "",
-                jumlah: 0, // Reset jumlah
-                status: "available", // Reset status
-                exp: "", // Reset exp
-            });
-            onClose(); // Menutup modal setelah rak ditambahkan
+            if (response.data && response.data.data) {
+                onAddRak(response.data.data);
+                setIsSuccessPopupOpen(true); // Tampilkan popup sukses terlebih dahulu
+                setTimeout(() => {
+                    setIsSuccessPopupOpen(false);
+                    navigate('/admin/lokasi_barang/data_rak');
+                }, 3000);
+                onClose(); // Tutup modal setelah popup sukses
+            };
         } catch (error) {
             alert("Gagal menambahkan rak!");
         }
@@ -38,7 +39,7 @@ function AddRak({ isOpen, onClose, onAddRak }) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 overflow-y-auto">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black-500 bg-opacity-50 overflow-y-auto">
             <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-lg dark:bg-gray-700">
                 <div className="flex items-center justify-between p-4 border-b dark:border-gray-600">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white">
@@ -69,20 +70,6 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Barang
-                        </label>
-                        <input
-                            type="text"
-                            name="barang_id"
-                            value={formData.barang_id}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan ID barang"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                             Nama Rak
                         </label>
                         <input
@@ -97,29 +84,16 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Jumlah
+                            Lokasi Rak
                         </label>
                         <input
-                            type="number"
-                            name="jumlah"
-                            value={formData.jumlah}
+                            type="text"
+                            name="nama_lokasi"
+                            value={formData.nama_lokasi}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan jumlah"
+                            placeholder="Contoh: Tengah"
                             required
-                            min="0"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Exp (Tanggal Kadaluarsa)
-                        </label>
-                        <input
-                            type="date"
-                            name="exp"
-                            value={formData.exp}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                         />
                     </div>
                     <div>
@@ -134,9 +108,10 @@ function AddRak({ isOpen, onClose, onAddRak }) {
                             required
                         >
                             <option value="available">Available</option>
-                            <option value="unavailable">Unavailable</option>
+                            <option value="not_available">Not Available</option>
                         </select>
                     </div>
+
                     <div className="flex justify-end gap-3">
                         <button
                             type="button"
