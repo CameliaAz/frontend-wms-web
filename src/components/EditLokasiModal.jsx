@@ -13,11 +13,11 @@ export default function EditLokasiModal({ isOpen, onClose, item, onUpdate }) {
         // Mengisi form dengan data item yang akan diedit
         if (item) {
             setFormData({
-                nama_produk: item.nama_produk,
-                kategori: item.kategori,
-                stok: item.stok,
+                nama_produk: item.nama_barang,
+                kategori: item.nama_kat,
+                stok: item.jumlah,
                 exp: item.exp,
-                lokasi: item.lokasi,
+                lokasi: item.nama_rak,
             });
         }
     }, [item]);

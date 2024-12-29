@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoAdd } from "react-icons/io5";
+import { MdClose } from "react-icons/md";  // Make sure to import MdClose
 import axios from "axios";
 
 const AddBarangModal = ({ onAddBarang }) => {
@@ -11,11 +12,11 @@ const AddBarangModal = ({ onAddBarang }) => {
         harga_jual: "",
         kategori: "",
     });
-    const [gambar, setGambar] = useState(null); // Untuk file gambar
+    const [gambar, setGambar] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [kategoriList, setKategoriList] = useState([]); // Data kategori
+    const [kategoriList, setKategoriList] = useState([]);
 
-    // Fetch data kategori ketika modal dibuka
+    // Fetch data kategori when modal is opened
     useEffect(() => {
         if (isModalOpen) {
             const fetchKategori = async () => {
@@ -39,7 +40,7 @@ const AddBarangModal = ({ onAddBarang }) => {
     };
 
     const handleFileChange = (e) => {
-        setGambar(e.target.files[0]); // Set gambar dari input file
+        setGambar(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
@@ -53,8 +54,8 @@ const AddBarangModal = ({ onAddBarang }) => {
             const response = await axios.post("http://127.0.0.1:8000/api/barang", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            onAddBarang(response.data); // Tambahkan data baru ke parent
-            setIsModalOpen(false);
+            onAddBarang(response.data);  // Add new data to parent
+            setIsModalOpen(false);  // Close modal on successful submit
         } catch (error) {
             console.error("Error adding barang:", error);
         }
@@ -76,11 +77,23 @@ const AddBarangModal = ({ onAddBarang }) => {
             </div>
 
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-1/2">
-                        <h2 className="text-xl font-bold mb-4">Tambah Barang</h2>
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="relative p-2 max-w-[90%] max-h-[90vh] overflow-x-auto bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                        <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
+                            <h3 className="text-lg font-['Poppins'] font-bold text-gray-900 dark:text-white">
+                                Penambahan Data Barang
+                            </h3>
+                            <button
+                                onClick={() => setIsModalOpen(false)}  // Close modal on click
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            >
+                                <MdClose className="w-3 h-3" />
+                            </button>
+                        </div>
+                        <div className="p-2">
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
+                        <div className="grid grid-cols-2 gap-4">
+                        <div>
                                 <label className="block text-gray-700">Nama Barang</label>
                                 <input
                                     type="text"
@@ -92,7 +105,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     required
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Varian</label>
                                 <input
                                     type="text"
@@ -103,7 +116,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     placeholder="Masukkan varian barang"
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Ukuran</label>
                                 <input
                                     type="text"
@@ -114,7 +127,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     placeholder="Masukkan ukuran barang"
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Deskripsi</label>
                                 <textarea
                                     name="deskripsi"
@@ -124,7 +137,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     placeholder="Masukkan deskripsi barang"
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Harga Jual</label>
                                 <input
                                     type="number"
@@ -136,7 +149,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     required
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Kategori</label>
                                 <select
                                     name="kategori"
@@ -153,7 +166,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     ))}
                                 </select>
                             </div>
-                            <div className="mb-4">
+                            <div >
                                 <label className="block text-gray-700">Gambar</label>
                                 <input
                                     type="file"
@@ -161,6 +174,7 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     className="w-full"
                                     accept="image/*"
                                 />
+                            </div>
                             </div>
                             <div className="flex justify-end gap-2">
                                 <button
@@ -175,10 +189,11 @@ const AddBarangModal = ({ onAddBarang }) => {
                                     className="text-white px-4 py-2 rounded hover:bg-blue-600"
                                     style={{ backgroundColor: "#1e429f" }}
                                 >
-                                    Simpan
+                                    Tambahkan Produk
                                 </button>
                             </div>
                         </form>
+                    </div>
                     </div>
                 </div>
             )}

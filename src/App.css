@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Media query untuk print */
+@media print {
+  /* Sembunyikan elemen-elemen yang tidak ingin dicetak */
+  .no-print {
+    display: none;
+  }
+
+  /* Tabel harus ditampilkan dengan baik */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Anda bisa menambahkan style lainnya untuk mempercantik tampilan tabel saat print */
+}
+

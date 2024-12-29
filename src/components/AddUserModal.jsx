@@ -86,6 +86,7 @@ export default function AddUserModal({ isOpen, onClose, onAddUser }) {
                     <button
                         onClick={handleSubmit}
                         className="px-4 py-2 text-white rounded-lg  bg-blue-700 hover:bg-blue-800 transition text-sm"
+                        style={{ backgroundColor: "#1e429f" }}
                     >
                         Tambah User
                     </button>

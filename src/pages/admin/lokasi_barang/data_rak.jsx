@@ -5,6 +5,7 @@ import Navbar from '../../../components/Nav';
 import Sidebar from '../../../components/Sidebar';
 import TableComponent from '../../../components/Table';
 import AddRakModal from '../../../components/AddRak';
+import EditRakModal from '../../../components/EditRak'; // Tambahkan modal edit rak
 import { IoAdd } from "react-icons/io5";
 
 export default function Rak() {
@@ -88,43 +89,18 @@ export default function Rak() {
     };
 
     const columns = [
-        {
-            title: "ID",
-            key: "id",
-            dataIndex: "id",
-        },
-        {
-            title: "Nama Barang",
-            key: "nama_barang",
-            dataIndex: "nama_barang",
-        },
-        {
-            title: "Nama Rak",
-            key: "nama_rak",
-            dataIndex: "nama_rak",
-        },
-        {
-            title: "Lokasi Rak",
-            key: "nama_lokasi",
-            dataIndex: "nama_lokasi",
-        },
-        {
-            title: "Stok",
-            key: "jumlah",
-            dataIndex: "jumlah",
-        },
-        {
-            title: "EXP",
-            key: "exp",
-            dataIndex: "exp",
-        },
+        { title: "ID", key: "id", dataIndex: "id" },
+        { title: "Nama Rak", key: "nama_rak", dataIndex: "nama_rak" },
+        { title: "Lokasi Rak", key: "nama_lokasi", dataIndex: "nama_lokasi" },
         {
             title: "Status",
             key: "status",
             dataIndex: "status",
             render: (text, row) => (
                 <span
-                    className={`px-2 py-1 rounded ${row.status === 'available' ? 'bg-green-200' : 'bg-red-200'}`}
+                    className={`px-2 py-1 rounded ${
+                        row.status === 'available' ? 'bg-green-200' : 'bg-red-200'
+                    }`}
                 >
                     {row.status || 'unknown'}
                 </span>
@@ -156,12 +132,10 @@ export default function Rak() {
             <div className="fixed top-0 left-0 w-full z-10">
                 <Navbar />
             </div>
-
             <div className="flex min-h-screen pt-16">
                 <div className="w-64 bg-gray-800 text-white">
                     <Sidebar role="admin" />
                 </div>
-
                 <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Data Rak</h1>
                     <div
@@ -178,21 +152,21 @@ export default function Rak() {
                     </div>
 
                     {/* Add Rak Modal */}
-                    <AddRakModal 
-                        isOpen={isModalOpen} 
-                        onClose={closeModal} 
-                        onAddRak={handleAddRak}
+                    <AddRakModal isOpen={isModalOpen} onClose={closeModal} onAddRak={handleAddRak} />
+
+                    {/* Edit Rak Modal */}
+                    <EditRakModal
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)}
+                        rak={selectedRak}
+                        onEditRak={handleEditRak}
                     />
 
                     {/* Error Display */}
                     {error && <div className="text-red-500">{error}</div>}
 
                     {/* Table of Rak */}
-                    <TableComponent 
-                        columns={columns} 
-                        data={rak} 
-                        renderActions={renderActions} 
-                    />
+                    <TableComponent columns={columns} data={rak} renderActions={renderActions} />
 
                     {/* Success Popup */}
                     {isSuccessPopupOpen && (

@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from "react";
 
-function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
+export default function EditMoveItemModal({ item, isOpen, onClose, onEdit, lokasiTujuan }) {
     const [formData, setFormData] = useState({
-        nama_produk: "",
-        tanggal_masuk: "",
-        kategori: "",
-        stok: 0,
-        exp: "",
-        lokasi: "",
+        lokasiTujuan: "",
     });
+
+    useEffect(() => {
+        if (item) {
+            setFormData({
+                lokasiTujuan: item.lokasiTujuan || "",
+            });
+        }
+    }, [item]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleEdit = (e) => {
         e.preventDefault();
-        if (onAdd) {
-            onAdd(formData);
-            alert("Data berhasil ditambahkan!");
-        } else if (onEdit) {
-            onEdit(formData);
-            alert("Data berhasil diperbarui!");
-        }
-        setFormData({ nama_produk: "", kategori: "", stok: 0, exp: "", lokasi: "" });
-        onClose();
-    };
 
-    useEffect(() => {
-        if (!isOpen) {
-            setFormData({ nama_produk: "", kategori: "", stok: 0, exp: "", lokasi: "" });
+        if (formData.lokasiTujuan.trim()) {
+            onEdit({
+                ...item,
+                lokasiTujuan: formData.lokasiTujuan,
+            });
+            alert("Barang berhasil diperbarui!");
+            onClose();
+        } else {
+            alert("Lokasi tujuan harus dipilih!");
         }
-    }, [isOpen]);
+    };
 
     if (!isOpen) return null;
 
@@ -41,7 +40,7 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
             <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-lg dark:bg-gray-700">
                 <div className="flex items-center justify-between p-4 border-b dark:border-gray-600">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-                        Tambah Lokasi Barang
+                        Edit Barang Pindah
                     </h2>
                     <button
                         onClick={onClose}
@@ -65,109 +64,76 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
                         <span className="sr-only">Close modal</span>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <form onSubmit={handleEdit} className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Nama Produk
+                            Nama Barang
                         </label>
-                        <input
-                            type="text"
-                            name="nama_produk"
-                            value={formData.nama_produk}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan nama produk"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.nama_barang}</p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tanggal Masuk
+                            Lokasi Asal
                         </label>
-                        <input
-                            type="date"
-                            name="tanggal_masuk"
-                            value={formData.tanggal_masuk}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.id_lokasi_sumber}</p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Kategori
-                        </label>
-                        <input
-                            type="text"
-                            name="kategori"
-                            value={formData.kategori}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan kategori"
-                            required
-                        />
-                    </div>
-    
-                    <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                             Jumlah Barang
                         </label>
-                        <input
-                            type="number"
-                            name="stok"
-                            value={formData.jumlah}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                            min="1"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.jumlah_pindah}</p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Lokasi
+                            Lokasi Tujuan
                         </label>
                         <select
-                            name="lokasi"
-                            value={formData.lokasi}
+                            name="lokasiTujuan"
+                            value={formData.lokasiTujuan}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             required
                         >
-                            <option value="">Pilih Lokasi</option>
-                            {locations?.map((loc) => (
-                                <option key={loc.id} value={loc.lokasi}>
-                                    {loc.lokasi}
+                            <option value="">Pilih Rak</option>
+                            {lokasiTujuan?.map((lokasi) => (
+                                <option key={lokasi.id} value={lokasi.nama_rak}>
+                                    {lokasi.nama_rak}
                                 </option>
                             ))}
                         </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tanggal Kedaluwarsa
+                            Bagian Rak
                         </label>
-                        <input
-                            type="date"
-                            name="exp"
-                            value={formData.exp}
+                        <select
+                            name="lokasiTujuan"
+                            value={formData.lokasiTujuan}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             required
-                        />
+                        >
+                            <option value="">Pilih Bagian Rak</option>
+                            {lokasiTujuan?.map((lokasi) => (
+                                <option key={lokasi.id} value={lokasi.nama_lokasi}>
+                                    {lokasi.nama_lokasi}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="flex justify-end gap-3">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+                            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-600"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                            style={{ backgroundColor: "#1e429f" }}
                         >
-                            Tambah
+                            Simpan Perubahan
                         </button>
                     </div>
                 </form>
@@ -175,5 +141,3 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
         </div>
     );
 }
-
-export default AddItemLokasi;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/img/1.png';
 
 export default function Navbar() {
     const [user, setUser] = useState(null); // Awalnya null
@@ -42,8 +43,8 @@ export default function Navbar() {
                     <div className="flex items-center">
                         <a href="#" className="flex items-center ml-2">
                             <img
-                                src="https://flowbite.com/docs/images/logo.svg"
-                                className="h-8 mr-3"
+                                src={logo}
+                                className="h-14 mr-12"
                                 alt="Flowbite Logo"
                             />
                             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
@@ -96,12 +97,14 @@ export default function Navbar() {
                                     )}
                                 </>
                             ) : (
-                                <a
-                                    href="/login/LoginPage"
-                                    className="text-sm text-gray-700 hover:underline dark:text-gray-400"
-                                >
-                                    Login
-                                </a>
+                                <button
+  onClick={() => window.location.href = '/login/LoginPage'} // Navigasi dengan window.location
+  className="h-[27px] px-5 py-2.5 bg-[#1e429f] text-white text-sm font-bold font-['Poppins'] rounded-lg flex justify-center items-center gap-2 overflow-hidden hover:bg-[#173878] focus:ring-2 focus:ring-[#1e429f] focus:ring-opacity-50"
+  style={{ backgroundColor: "#1e429f" }}
+>
+  Logout
+</button>
+
                             )}
                         </div>
                     </div>

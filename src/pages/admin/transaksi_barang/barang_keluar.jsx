@@ -3,7 +3,7 @@ import Sidebar from "../../../components/Sidebar";
 import Navbar from "../../../components/Nav";
 import TableComponent from "../../../components/Table";
 import AddDataKeluar from "../../../components/AddDataKeluar";
-import EditItemKeluar from "../../../components/EditItemKeluar";
+import EditDataKeluar from "../../../components/EditDataKeluar";
 import { IoAdd } from "react-icons/io5";
 import axios from "axios";
 
@@ -59,6 +59,7 @@ export default function BarangKeluar() {
                 `http://127.0.0.1:8000/api/barang-keluar/${updatedItem.id}`,
                 updatedItem
             );
+            console.log("Updated item response:", response.data); // Log the response data to check
             setData((prevData) =>
                 prevData.map((item) => (item.id === updatedItem.id ? response.data.barang_keluar : item))
             );
@@ -85,7 +86,7 @@ export default function BarangKeluar() {
     const handleFilter = (filterValue) => {
         setData((prevData) =>
             prevData.filter((item) =>
-                item.barang.nama.toLowerCase().includes(filterValue.toLowerCase())
+                item.nama_barang.toLowerCase().includes(filterValue.toLowerCase())
             )
         );
     };
@@ -93,12 +94,12 @@ export default function BarangKeluar() {
     // Columns definition for table
     const columns = [
         { key: "id", title: "ID", dataIndex: "id" },
-        { key: "nama_barang", title: "Nama Barang", dataIndex: "nama_barang" }, // Accessing barang.nama
-        { key: "kategori", title: "Kategori", dataIndex: "nama_kat" }, // Accessing kategori.nama_kategori
-        { key: "jumlah_keluar", title: "Jumlah Keluar", dataIndex: "jumlah_keluar" }, // Accessing jumlah
-        { key: "tanggal_keluar", title: "Tanggal Keluar", dataIndex: "tanggal_keluar" }, // Assuming created_at holds the date
-        { key: "nama_rak", title: "Lokasi Asal", dataIndex: "nama_rak" }, // Accessing rak.nama_rak
-        { key: "tujuan_keluar", title: "Alasan Keluar", dataIndex: "alasan" }, // Accessing alasan
+        { key: "nama_barang", title: "Nama Barang", dataIndex: "nama_barang" },
+        { key: "kategori", title: "Kategori", dataIndex: "nama_kat" },
+        { key: "jumlah_keluar", title: "Jumlah Keluar", dataIndex: "jumlah_keluar" },
+        { key: "tanggal_keluar", title: "Tanggal Keluar", dataIndex: "tanggal_keluar" },
+        { key: "nama_rak", title: "Lokasi Asal Rak", dataIndex: "nama_rak" },
+        { key: "tujuan_keluar", title: "Alasan Keluar", dataIndex: "alasan" },
     ];
 
     // Fungsi untuk merender tombol aksi
@@ -129,21 +130,8 @@ export default function BarangKeluar() {
                     <Sidebar role="admin" />
                 </div>
                 <div className="flex-1 p-8 overflow-x-auto">
-                    <h1 className="text-2xl font-bold mb-4">Barang Keluar</h1>
-                    <div
-                        className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"
-                        style={{ backgroundColor: "#1e429f" }}
-                    >
-                        <IoAdd className="w-5 h-5 text-white" />
-                        <button
-                            onClick={openModal}
-                            className="text-white text-sm font-semibold font-['Poppins'] leading-[21px] cursor-pointer hover:underline"
-                        >
-                            Tambahkan Data
-                        </button>
-                        <AddDataKeluar isOpen={isModalOpen} onClose={closeModal} onAdd={handleAdd} />
-                    </div>
-                    <EditItemKeluar
+                    <h1 className="text-2xl font-bold mb-4">Riwayat Barang Keluar</h1>
+                    <EditDataKeluar
                         isOpen={isEditModalOpen}
                         onClose={() => setEditModalOpen(false)}
                         item={selectedItem}
@@ -153,7 +141,7 @@ export default function BarangKeluar() {
                     <TableComponent
                         columns={columns}
                         data={data}
-                        filterKey="barang.nama_barang" // Matching filter to correct field structure
+                        filterKey="barang.nama_barang"
                         onFilter={handleFilter}
                         renderActions={renderActions}
                     />

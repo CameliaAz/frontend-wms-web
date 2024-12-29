@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
-import Unauthorized from './pages/login/Unauthorized';
+import Unauthorized from './pages/Unauthorized';
 import LoginPage from './pages/login/LoginPage';
 import Sidebar from './components/Sidebar';
 import AdminDashboard from './pages/admin/dashboard';
@@ -15,6 +15,7 @@ import AdminCRUDSupplier from './pages/admin/user/supplier';
 import AdminCRUDKategori from './pages/admin/user/kategori';
 import AdminCRUDBarang from './pages/admin/barang/barang';
 import ManajerDashboard from './pages/manajer/dashboard';
+import ManajerLaporan from './pages/manajer/laporan';
 import Navbar from './components/Nav';
 
 const App = () => {
@@ -31,12 +32,13 @@ const App = () => {
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<Navigate to="/login/LoginPage" />} />
         {/* Public Route */}
         <Route path="/login/LoginPage" element={<LoginPage />} />
         <Route path="/Unauthorized" element={<Unauthorized />} />
 
         {/* Protected Routes */}
-        <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+        <Route element={<PrivateRoute allowedRoles={['admin','manager']} />}>
           <Route
             path="/*"
             element={
@@ -51,7 +53,7 @@ const App = () => {
                         <Route path="/admin/dashboard" element={<AdminDashboard />} />
                         <Route path="/admin/transaksi_barang/barang_masuk" element={<AdminBarangMasuk />} />
                         <Route path="/admin/transaksi_barang/barang_keluar" element={<AdminBarangKeluar />} />
-                        <Route path="/admin/lokasi_barang" element={<AdminLokasiBarang />} />
+                        <Route path="/admin/lokasi_barang/lokasi_barang" element={<AdminLokasiBarang />} />
                         <Route path="/admin/pemindahan_barang" element={<AdminPemindahanBarang />} />
                         <Route path="/admin/user/user" element={<AdminCRUDUser />} />
                         <Route path="/admin/user/supplier" element={<AdminCRUDSupplier />} />
@@ -62,10 +64,10 @@ const App = () => {
                     )}
 
                     {/* Manager Routes */}
-                    {userRole === 'manajer' && (
+                    {userRole === 'manager' && (
                       <>
                         <Route path="/manajer/dashboard" element={<ManajerDashboard />} />
-                        <Route path="/manajer/laporan" element={<ManajerDashboard />} />
+                        <Route path="/manajer/laporan" element={<ManajerLaporan />} />
                       </>
                     )}
                   </Routes>

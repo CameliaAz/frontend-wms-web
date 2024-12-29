@@ -8,7 +8,7 @@ export default function AddItemModal({ isOpen, onClose }) {
         idBarang: "",
         idRak: "",
         idSupplier: "",
-        idKategori: "",  // Added field for category
+        idKategori: "", 
         idAdmin: "",
         jumlahBarangMasuk: "",
         expired: "",
@@ -63,11 +63,11 @@ export default function AddItemModal({ isOpen, onClose }) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black-500 bg-opacity-50">
-            <div className="relative p-4 w-full max-w-2xl bg-white rounded-lg shadow-lg dark:bg-gray-700">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="relative p-2 max-w-[90%] max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-lg dark:bg-gray-700">
                 <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
                     <h3 className="text-lg font-['Poppins'] font-bold text-gray-900 dark:text-white">
-                        Penambahan Data Barang
+                        Penambahan Data Barang Masuk
                     </h3>
                     <button
                         onClick={onClose}
@@ -278,6 +278,7 @@ export default function AddItemModal({ isOpen, onClose }) {
                             <button
                                 type="submit"
                                 className="w-[139px] h-[45px] text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700"
+                                style={{ backgroundColor: "#1e429f" }}
                             >
                                 Tambah
                             </button>

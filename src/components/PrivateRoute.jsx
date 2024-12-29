@@ -11,7 +11,7 @@ const PrivateRoute = ({ allowedRoles }) => {
 
   // Jika role pengguna tidak sesuai dengan allowedRoles, redirect ke halaman unauthorized
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    return <Navigate to="/login/Unauthorized" replace />;
+    return <Navigate to="/Unauthorized" replace />;
   }
 
   // Jika lolos pemeriksaan, render konten

@@ -77,7 +77,7 @@ export default function Barang() {
         }
     };
 
-    const handledeleteBarang = async (id) => {
+    const handleDeleteBarang = async (id) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/barang/${id}`);
             setBarang((prevBarang) =>
@@ -123,7 +123,7 @@ export default function Barang() {
         {
             title: "Kategori",
             key: "nama_kat",
-            dataIndex: "nama_kat", // Menampilkan nama kategori dari join
+            dataIndex: "nama_kat", 
         },
         {
             title: "Gambar",

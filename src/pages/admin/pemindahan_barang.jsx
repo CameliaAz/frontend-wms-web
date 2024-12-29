@@ -4,7 +4,7 @@ import TableComponent from "../../components/Table";
 import { IoAdd } from "react-icons/io5";
 import Navbar from "../../components/Nav";
 import Sidebar from "../../components/Sidebar";
-import EditItemModal from "../../components/EditItemModal";
+import EditMoveItemModal from "../../components/EditMoveItemModal";
 import MoveItemModal from "../../components/MoveItemModal";
 
 const PemindahanBarang = () => {
@@ -21,7 +21,7 @@ const PemindahanBarang = () => {
     // Fungsi untuk mengambil data barang
     const fetchItems = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/pemindahan");
+            const response = await axios.get("http://127.0.0.1:8000/api/barang-pindah");
             console.log(response.data); // Verifikasi struktur data
             setData(response.data);
         } catch (error) {
@@ -32,7 +32,7 @@ const PemindahanBarang = () => {
     // Fungsi untuk menghapus item
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/pemindahan/${id}`);
+            await axios.delete(`http://127.0.0.1:8000/api/barang-pindah/${id}`);
             setData(data.filter((item) => item.id !== id));
         } catch (error) {
             console.error("Failed to delete item:", error);
@@ -42,7 +42,7 @@ const PemindahanBarang = () => {
     // Fungsi untuk menambahkan item
     const handleAddItem = async (newItem) => {
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/pemindahan", newItem);
+            const response = await axios.post("http://127.0.0.1:8000/api/barang-pindah", newItem);
             setData([...data, response.data]);
         } catch (error) {
             console.error("Failed to add item:", error);
@@ -52,7 +52,7 @@ const PemindahanBarang = () => {
     // Fungsi untuk memperbarui item
     const handleUpdateItem = async (updatedItem) => {
         try {
-            const response = await axios.put(`http://127.0.0.1:8000/api/pemindahan/${updatedItem.id}`, updatedItem);
+            const response = await axios.put(`http://127.0.0.1:8000/api/barang-pindah/${updatedItem.id}`, updatedItem);
             setData(data.map((item) => (item.id === updatedItem.id ? response.data : item)));
             setEditModalOpen(false);
         } catch (error) {
@@ -66,12 +66,11 @@ const PemindahanBarang = () => {
     // Kolom yang akan ditampilkan di tabel
     const columns = [
         { key: "id", title: "ID", dataIndex: "id" },
-        { key: "nama_barang", title: "Nama Barang", dataIndex: "barang.nama" },
-        { key: "date", title: "Tanggal Masuk", dataIndex: "created_at" },
-        { key: "lokasi_asal", title: "Lokasi Asal", dataIndex: "rak_sumber.nama_rak" },
-        { key: "lokasi_tujuan", title: "Lokasi Tujuan", dataIndex: "rak_tujuan.nama_rak" },
+        { key: "nama_barang", title: "Nama Barang", dataIndex: "nama_barang" },
+        { key: "nama_rak", title: "Lokasi Asal", dataIndex: "nama_rak" },
+        { key: "nama_rak", title: "Lokasi Tujuan", dataIndex: "nama_rak" },
         { key: "jumlah", title: "Jumlah", dataIndex: "jumlah_pindah" },
-        { key: "admin", title: "Admin", dataIndex: "user_name" },
+        { key: "name", title: "Admin", dataIndex: "name" },
     ];
 
     // Fungsi untuk merender aksi edit dan hapus
@@ -109,7 +108,7 @@ const PemindahanBarang = () => {
                 <div className="flex-1 p-8 overflow-x-auto">
                     <h1 className="text-2xl font-bold mb-4">Riwayat Pemindahan Barang</h1>
 
-                    <div
+                    {/* <div
                         className="h-[47px] px-5 py-2.5 rounded-lg justify-center items-center gap-2 inline-flex mb-6"
                         style={{ backgroundColor: "#1e429f" }}
                     >
@@ -120,7 +119,7 @@ const PemindahanBarang = () => {
                         >
                             Tambahkan Data
                         </button>
-                    </div>
+                    </div> */}
 
                     {/* Tabel */}
                     <TableComponent
@@ -136,7 +135,7 @@ const PemindahanBarang = () => {
                         onSubmit={handleAddItem}
                     />
 
-                    <EditItemModal
+                    <EditMoveItemModal
                         isOpen={isEditModalOpen}
                         onClose={() => setEditModalOpen(false)}
                         item={selectedItem}

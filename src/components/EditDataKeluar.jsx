@@ -1,38 +1,42 @@
 import React, { useState, useEffect } from "react";
 
-function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
+export default function EditDataKeluar({ isOpen, onClose, item, onUpdate, kategoriList }) {
     const [formData, setFormData] = useState({
-        nama_produk: "",
-        tanggal_masuk: "",
-        kategori: "",
-        stok: 0,
-        exp: "",
-        lokasi: "",
+        jumlahKeluar: 0,
+        alasan: "",
+        tanggalKeluar: "",
     });
+
+    useEffect(() => {
+        if (isOpen && item) {
+            setFormData({
+                jumlahKeluar: item.jumlah_keluar || 0,
+                alasan: item.alasan || "",
+                tanggalKeluar: item.tanggal_keluar || "",
+            });
+        }
+    }, [isOpen, item]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSave = (e) => {
         e.preventDefault();
-        if (onAdd) {
-            onAdd(formData);
-            alert("Data berhasil ditambahkan!");
-        } else if (onEdit) {
-            onEdit(formData);
-            alert("Data berhasil diperbarui!");
-        }
-        setFormData({ nama_produk: "", kategori: "", stok: 0, exp: "", lokasi: "" });
-        onClose();
-    };
+        const { jumlahKeluar, alasan, tanggalKeluar } = formData;
 
-    useEffect(() => {
-        if (!isOpen) {
-            setFormData({ nama_produk: "", kategori: "", stok: 0, exp: "", lokasi: "" });
+        if (jumlahKeluar > 0 && alasan.trim() && tanggalKeluar.trim()) {
+            onUpdate({
+                ...item,
+                ...formData,
+            });
+            alert("Barang berhasil diperbarui!");
+            onClose();
+        } else {
+            alert("Semua field harus diisi dengan benar!");
         }
-    }, [isOpen]);
+    };
 
     if (!isOpen) return null;
 
@@ -41,7 +45,7 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
             <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-lg dark:bg-gray-700">
                 <div className="flex items-center justify-between p-4 border-b dark:border-gray-600">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-                        Tambah Lokasi Barang
+                        Edit Barang Keluar
                     </h2>
                     <button
                         onClick={onClose}
@@ -65,90 +69,60 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
                         <span className="sr-only">Close modal</span>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <form onSubmit={handleSave} className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Nama Produk
+                            Nama Barang
                         </label>
-                        <input
-                            type="text"
-                            name="nama_produk"
-                            value={formData.nama_produk}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan nama produk"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.nama_barang}</p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tanggal Masuk
+                            Rak
                         </label>
-                        <input
-                            type="date"
-                            name="tanggal_masuk"
-                            value={formData.tanggal_masuk}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.nama_rak}</p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Kategori
+                            Bagian Rak
                         </label>
-                        <input
-                            type="text"
-                            name="kategori"
-                            value={formData.kategori}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-                            placeholder="Masukkan kategori"
-                            required
-                        />
+                        <p className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{item?.nama_lokasi}</p>
                     </div>
-    
                     <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Jumlah Barang
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            Jumlah Keluar
                         </label>
                         <input
                             type="number"
-                            name="stok"
-                            value={formData.jumlah}
+                            name="jumlahKeluar"
+                            value={formData.jumlahKeluar}
                             onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             min="1"
                             required
                         />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Lokasi
+                            Alasan Keluar
                         </label>
-                        <select
-                            name="lokasi"
-                            value={formData.lokasi}
+                        <textarea
+                            name="alasan"
+                            value={formData.alasan}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                            placeholder="Masukkan alasan"
                             required
-                        >
-                            <option value="">Pilih Lokasi</option>
-                            {locations?.map((loc) => (
-                                <option key={loc.id} value={loc.lokasi}>
-                                    {loc.lokasi}
-                                </option>
-                            ))}
-                        </select>
+                        ></textarea>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tanggal Kedaluwarsa
+                            Tanggal Keluar
                         </label>
                         <input
                             type="date"
-                            name="exp"
-                            value={formData.exp}
+                            name="tanggalKeluar"
+                            value={formData.tanggalKeluar}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             required
@@ -158,16 +132,16 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+                            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-600"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            className="px-4 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-600"
                             style={{ backgroundColor: "#1e429f" }}
                         >
-                            Tambah
+                            Simpan
                         </button>
                     </div>
                 </form>
@@ -175,5 +149,3 @@ function AddItemLokasi({ isOpen, onClose, onAdd, locations, onEdit }) {
         </div>
     );
 }
-
-export default AddItemLokasi;
